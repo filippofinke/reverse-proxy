@@ -1,0 +1,16 @@
+{
+  "name": "reverse-proxy",
+  "version": "1.0.0",
+  "description": "A very simple reverse proxy",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "http": "^0.0.1-security",
+    "http-proxy": "^1.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Filippo Finke"
+}
