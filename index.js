@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => {
 		let target = config.services[hostname];
 		log(`${hostname} -> ${target}`);
 		proxy.web(req, res, { target }, (err, req, res) => {
-			res.writeHead(501, { "Content-Type": "text/plain" });
+			res.writeHead(503, { "Content-Type": "text/plain" });
 			res.write("The requested service is unavailable.");
 			res.end();
 		});
