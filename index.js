@@ -1,6 +1,8 @@
 const fs = require("fs");
 const http = require("http");
 const httpProxy = require("http-proxy");
+const fetch = require("node-fetch");
+const ipRangeCheck = require("ip-range-check");
 
 const log = (text) => {
 	let date = new Date();
@@ -15,6 +17,14 @@ const config = require("./config.js");
 
 const proxy = httpProxy.createProxyServer({});
 
+let cloudflareIps = [];
+
+fetch("https://www.cloudflare.com/ips-v4")
+	.then((r) => r.text())
+	.then((text) => {
+		cloudflareIps = text.split("\n");
+	});
+
 proxy.on("proxyReq", (proxyReq, req, res, options) => {
 	let timeout = setTimeout(() => proxyReq.destroy(), config.connectionTimeout);
 
@@ -25,6 +35,19 @@ proxy.on("proxyReq", (proxyReq, req, res, options) => {
 
 const server = http.createServer((req, res) => {
 	let hostname = req.headers.host;
+
+	delete req.headers["x-forwarded-for"];
+	delete req.headers["x-forwarded-host"];
+	delete req.headers["x-forwarded-proto"];
+
+	if (
+		ipRangeCheck(req.socket.remoteAddress, cloudflareIps) &&
+		req.headers["cf-connecting-ip"]
+	) {
+		req.headers["x-forwarded-for"] = req.headers["cf-connecting-ip"];
+	} else {
+		req.headers["x-forwarded-for"] = req.socket.remoteAddress;
+	}
 
 	if (config.services[hostname]) {
 		let target = config.services[hostname];
@@ -42,6 +65,6 @@ const server = http.createServer((req, res) => {
 	}
 });
 
-server.listen(config.port, () => {
+server.listen(config.port, "0.0.0.0", () => {
 	console.log(`reverse-proxy listening on port ${config.port}`);
 });
