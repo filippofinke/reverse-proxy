@@ -49,8 +49,15 @@ const server = http.createServer((req, res) => {
 		req.headers["x-forwarded-for"] = req.socket.remoteAddress;
 	}
 
-	if (config.services[hostname]) {
-		let target = config.services[hostname];
+	let service = config.services.find((s) => {
+		if (s.endsWith) {
+			return hostname.endsWith(s.hostname);
+		}
+		return s.hostname === hostname;
+	});
+
+	if (service) {
+		let target = service.target;
 		log(`${hostname} -> ${target}`);
 		proxy.web(req, res, { target }, (err, req, res) => {
 			res.writeHead(503, { "Content-Type": "text/plain" });
