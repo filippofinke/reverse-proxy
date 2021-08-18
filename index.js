@@ -26,7 +26,7 @@ fetch("https://www.cloudflare.com/ips-v4")
 	});
 
 proxy.on("proxyReq", (proxyReq, req, res, options) => {
-	let timeout = setTimeout(() => proxyReq.destroy(), config.connectionTimeout);
+	let timeout = setTimeout(() => proxyReq.destroy(), options.timeout);
 
 	proxyReq.on("connect", () => {
 		clearTimeout(timeout);
@@ -59,11 +59,16 @@ const server = http.createServer((req, res) => {
 	if (service) {
 		let target = service.target;
 		log(`${hostname} -> ${target}`);
-		proxy.web(req, res, { target }, (err, req, res) => {
-			res.writeHead(503, { "Content-Type": "text/plain" });
-			res.write("The requested service is unavailable.");
-			res.end();
-		});
+		proxy.web(
+			req,
+			res,
+			{ target, timeout: service.timeout || config.connectionTimeout },
+			(err, req, res) => {
+				res.writeHead(503, { "Content-Type": "text/plain" });
+				res.write("The requested service is unavailable.");
+				res.end();
+			}
+		);
 	} else {
 		log(`${hostname} -> not found!`);
 		res.writeHead(404, { "Content-Type": "text/plain" });
