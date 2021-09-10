@@ -55,7 +55,10 @@ const server = http.createServer((req, res) => {
 		}
 
 		for (let host of s.hostname) {
-			if (hostname == host || (s.endsWith && hostname.endsWith(host))) {
+			if (
+				hostname &&
+				(hostname == host || (s.endsWith && hostname.endsWith(host)))
+			) {
 				return true;
 			}
 		}
