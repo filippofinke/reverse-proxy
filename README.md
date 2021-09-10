@@ -22,6 +22,12 @@ npm run start
 - Github: [@filippofinke](https://github.com/filippofinke)
 - LinkedIn: [@filippofinke](https://linkedin.com/in/filippofinke)
 
+## Todo
+- [ ] Web Dashboard
+  - [ ] Users
+  - [ ] Usage
+  - [ ] Requests
+
 ## Show your support
 
 Give a ⭐️ if this project helped you!
