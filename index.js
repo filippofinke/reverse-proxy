@@ -69,6 +69,7 @@ const server = http.createServer((req, res) => {
 	if (service) {
 		let target = service.target;
 		log(`${hostname} -> ${target}`);
+
 		proxy.web(
 			req,
 			res,
@@ -84,6 +85,35 @@ const server = http.createServer((req, res) => {
 		res.writeHead(404, { "Content-Type": "text/plain" });
 		res.write("Service not found.");
 		res.end();
+	}
+});
+
+// To refactor
+server.on("upgrade", (req, socket, head) => {
+	let hostname = req.headers.host;
+
+	let service = config.services.find((s) => {
+		if (typeof s.hostname === "string") {
+			s.hostname = [s.hostname];
+		}
+
+		for (let host of s.hostname) {
+			if (
+				hostname &&
+				(hostname == host || (s.endsWith && hostname.endsWith(host)))
+			) {
+				return true;
+			}
+		}
+
+		return false;
+	});
+
+	if (service) {
+		log(`websocket -> ${hostname} -> ${service.target}`);
+		proxy.ws(req, socket, head, {
+			target: service.target,
+		});
 	}
 });
 
