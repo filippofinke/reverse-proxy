@@ -64,11 +64,16 @@ const server = http.createServer((req, res) => {
     let target = service.target;
     log(`${hostname} -> ${target}`);
 
-    proxy.web(req, res, { target, timeout: service.timeout || config.connectionTimeout }, (err, req, res) => {
-      res.writeHead(503, { "Content-Type": "text/plain" });
-      res.write("The requested service is unavailable.");
-      res.end();
-    });
+    proxy.web(
+      req,
+      res,
+      { target, timeout: service.timeout || config.connectionTimeout || 5000 },
+      (err, req, res) => {
+        res.writeHead(503, { "Content-Type": "text/plain" });
+        res.write("The requested service is unavailable.");
+        res.end();
+      }
+    );
   } else {
     log(`${hostname} -> not found!`);
     res.writeHead(404, { "Content-Type": "text/plain" });
