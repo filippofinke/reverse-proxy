@@ -14,7 +14,7 @@ if (!fs.existsSync("config.js")) {
   log("ERROR! Please copy your config.sample.js to config.js");
   process.exit(0);
 }
-const config = require("./config.js");
+const config = require("./config.sample.js");
 const proxy = httpProxy.createProxyServer({});
 let cloudflareIps = [];
 
