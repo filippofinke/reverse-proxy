@@ -5,12 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "http": "^0.0.1-security",
+    "express": "^4.17.3",
     "http-proxy": "^1.18.1",
     "ip-range-check": "^0.2.0",
     "node-fetch": "^2.6.1"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node index.js"
   },
