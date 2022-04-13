@@ -14,7 +14,7 @@ if (!fs.existsSync("config.js")) {
   log("ERROR! Please copy your config.sample.js to config.js");
   process.exit(0);
 }
-const config = require("./config.sample.js");
+const config = require("./config.js");
 const proxy = httpProxy.createProxyServer({});
 let cloudflareIps = [];
 
@@ -100,25 +100,37 @@ if (config.httpsPort) {
 
 function auth(req, res, next) {
   let hostname = req.headers.host;
+  let path = req.path;
   let service = getService(hostname);
-  if (service && service.auth) {
-    var auth;
-    if (req.headers.authorization) {
-      auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+  console.log(hostname);
+  if (service) {
+    if (service.ignore && service.ignore.includes(path)) {
+      console.log(`${hostname} -> ${path} -> ignored`);
+      next();
+      return;
     }
-    if (!auth || auth[0] !== service.auth.username || auth[1] !== service.auth.password) {
+    if (service.auth) {
+      var auth;
+      if (req.headers.authorization) {
+        auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+      }
+      if (!auth || auth[0] !== service.auth.username || auth[1] !== service.auth.password) {
         res.statusCode = 401;
         res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
         res.end('Unauthorized');
-    } else {
+      } else {
         next();
+      }
+    } else {
+      next();
     }
   }else{
     next();
+    return
   }
 }
 
-function getService (hostname) {
+function getService(hostname) {
   return config.services.find((s) => {
     if (typeof s.hostname === "string") {
       s.hostname = [s.hostname];
