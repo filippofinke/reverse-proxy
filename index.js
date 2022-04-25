@@ -102,29 +102,35 @@ function auth(req, res, next) {
   let hostname = req.headers.host;
   let path = req.path;
   let service = getService(hostname);
-  console.log(hostname);
+  console.log(path);
   if (service) {
+    console.log(service)
     if (service.ignore && service.ignore.includes(path)) {
       console.log(`${hostname} -> ${path} -> ignored`);
       next();
       return;
     }
-    if (service.auth) {
-      var auth;
-      if (req.headers.authorization) {
-        auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
-      }
-      if (!auth || auth[0] !== service.auth.username || auth[1] !== service.auth.password) {
-        res.statusCode = 401;
-        res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
-        res.end('Unauthorized');
+    if (service.authOnly && service.authOnly.includes(path)) {
+      if (service.auth) {
+        var auth;
+        if (req.headers.authorization) {
+          auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+        }
+        if (!auth || auth[0] !== service.auth.username || auth[1] !== service.auth.password) {
+          res.statusCode = 401;
+          res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
+          res.end('Unauthorized');
+        } else {
+          next();
+        }
       } else {
         next();
       }
-    } else {
+    }else{
       next();
+      return
     }
-  }else{
+  } else {
     next();
     return
   }
