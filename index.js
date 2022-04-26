@@ -110,23 +110,24 @@ function auth(req, res, next) {
       next();
       return;
     }
-    if (service.authOnly && service.authOnly.includes(path)) {
-      if (service.auth) {
-        var auth;
-        if (req.headers.authorization) {
-          auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
-        }
-        if (!auth || auth[0] !== service.auth.username || auth[1] !== service.auth.password) {
-          res.statusCode = 401;
-          res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
-          res.end('Unauthorized');
-        } else {
-          next();
-        }
+    if (service.auth) {
+      if (service.authOnly && !service.authOnly.includes(path)) {
+        console.log(`${hostname} -> ${path} -> authOnly`);
+        next();
+        return;
+      }
+      var auth;
+      if (req.headers.authorization) {
+        auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+      }
+      if (!auth || auth[0] !== service.auth.username || auth[1] !== service.auth.password) {
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
+        res.end('Unauthorized');
       } else {
         next();
       }
-    }else{
+    } else {
       next();
       return
     }
