@@ -102,9 +102,7 @@ function auth(req, res, next) {
   let hostname = req.headers.host;
   let path = req.path;
   let service = getService(hostname);
-  console.log(path);
   if (service) {
-    console.log(service)
     if (service.ignore && service.ignore.includes(path)) {
       console.log(`${hostname} -> ${path} -> ignored`);
       next();
