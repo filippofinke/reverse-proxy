@@ -1,0 +1,67 @@
+.App {
+  background-color: #282c34;
+  height: 100vh;
+  width: 100%;
+  color: #cdd9e5;
+}
+
+.service-manage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.service-bar {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+
+.service-bar-search {
+  height: 2rem;
+  width: calc(100% - 1rem - 2px);
+  float: left;
+}
+
+.service-bar-search input {
+  height: 2rem;
+  font-size: 1.3em;
+  border: 1px solid #373e47;
+  border-radius: .5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #cdd9e5;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+
+.service-bar-search input:focus {
+  outline: none
+}
+
+.service-bar-search input:disabled {
+  opacity: .4
+}
+
+.service-list {
+  width: 75%;
+  max-height: 70%;
+  overflow-y: scroll;
+}
+
+.service-container {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* in mobile screen */
+@media only screen and (max-width: 600px) {
+  .service-container {
+    min-width: 100%;
+  }
+}
