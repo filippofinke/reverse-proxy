@@ -1,17 +1,17 @@
-.service{
+.service {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: hsla(0,0%,100%,.05);
+    background-color: hsla(0, 0%, 100%, .05);
     color: #cdd9e5;
     border-radius: 0.5rem;
     height: 5rem;
 }
 
 
-.service div{
+.service div {
     display: flex;
     align-items: center;
     justify-content: left;
@@ -20,19 +20,29 @@
 }
 
 /* firt div in service */
-.service div:first-child{
+.service div:first-child {
     margin-left: 1rem;
 }
 
-.service div:last-child{
+.service div:last-child {
     margin-right: 1rem;
 }
 
-.service div:not(:first-child){
+.service div:not(:first-child) {
     justify-content: center;
 }
 
-.icon{
+.service-conf {
+    display: flex;
+    flex-direction: column;
+    width: calc(100%-2px);
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid #373e47;
+    color: #cdd9e5;
+    border-radius: 0.5rem;
+}
+
+.icon {
     cursor: pointer;
     font-size: 2rem;
     display: flex !important;
@@ -40,30 +50,53 @@
     margin: auto;
 }
 
-.icon:hover{
-    background-color: hsla(0,0%,100%,.1);
+.icon:hover {
+    background-color: hsla(0, 0%, 100%, .1);
 }
 
-.big{
+.big {
     font-weight: bold;
 }
 
-.medium{
-    width:25% !important;
+.medium {
+    width: 25% !important;
 }
 
-.small{
-    width:10% !important;
+.small {
+    width: 10% !important;
+}
+
+.service-conf-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.service-conf-add {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.service-conf-add button {
+    height: 1.5rem;
+    width: 50%;
+    border: 1px solid #373e47;
+    border-radius: .5rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #cdd9e5;
 }
 
 @media only screen and (max-width: 900px) {
 
-    .big{
+    .big {
         font-weight: bold;
         width: 50% !important;
     }
 
-    .collapsible{
+    .collapsible {
         display: none !important;
     }
 }

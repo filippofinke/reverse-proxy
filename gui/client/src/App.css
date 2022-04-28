@@ -39,6 +39,14 @@
   padding: 0.5rem;
 }
 
+.service-bar-button button {
+  height: 3rem;
+  width: 100%;
+  border: 1px solid #373e47;
+  border-radius: .5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #cdd9e5;
+}
 
 .service-bar-search input:focus {
   outline: none
@@ -47,6 +55,7 @@
 .service-bar-search input:disabled {
   opacity: .4
 }
+
 
 .service-list {
   width: 75%;
@@ -57,6 +66,18 @@
 .service-container {
   width: 100%;
   margin-bottom: 1rem;
+}
+
+.add-icon {
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.add-icon:hover{
+  background-color: hsla(0,0%,100%,.1);
 }
 
 /* in mobile screen */

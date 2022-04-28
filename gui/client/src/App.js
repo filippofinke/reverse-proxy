@@ -1,5 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
+import {FiPlusCircle} from "react-icons/fi";
 import Service from './component/Service/Service';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
       setServices(json);
     };
     fetchData();
-  },[])
+  }, [])
 
   const filerChange = (event) => {
     setFilter(event.target.value);
@@ -48,6 +49,11 @@ function App() {
               )
             })
           }
+        </div>
+        <div className="service-bar">
+          <div className="service-bar-button">
+            <button className='add-icon'><FiPlusCircle /></button>
+          </div>
         </div>
       </div>
     </div>
